@@ -13,8 +13,12 @@ import { fetcher } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 const ChatAction = () => {
-  const pathname=usePathname();
-  const { data: { messages } = {}, error, mutate } = useSWR("/api/getMessages/"+pathname.split('/').pop(), fetcher);
+  const pathname = usePathname();
+  const {
+    data: { messages } = { messages: [] },
+    error,
+    mutate,
+  } = useSWR("/api/getMessages/" + pathname.split("/").pop(), fetcher);
   const { data: session } = useSession();
   const { repliedMessage, handleRepliedMessage } = useChatContext();
   const { theme } = useTheme();
@@ -61,6 +65,7 @@ const ChatAction = () => {
       session?.user?.email
     ) {
       event.preventDefault();
+      
       setValue("");
       const id = uuid();
       const message: Message = {
@@ -78,17 +83,23 @@ const ChatAction = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: pathname.split('/').pop(),
+            id: pathname.split("/").pop(),
             message,
           }),
         }).then((res) => res.json());
-        return [data.message, ...messages!];
+        return [data.message, ...(messages || [])];
       };
 
       await mutate(uploadMessageToUpstash, {
-        optimisticData: [message, ...messages!],
+        optimisticData: [message, ...(messages || [])],
         rollbackOnError: true,
       });
+      setTimeout(() => {
+        const chatBody = document.getElementById("chat__body");
+        if (chatBody) {
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+      }, 100);
     }
   };
   if (!session) return null;
