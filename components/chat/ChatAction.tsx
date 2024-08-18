@@ -22,7 +22,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
     data,
     error,
     mutate,
-  } = useSWR("/api/getMessages/" + pathname.split("/").pop(), fetcher);
+  } = useSWR(process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop(), fetcher);
   const { data: session } = useSession();
   const { repliedMessage, handleRepliedMessage } = useChatContext();
   const { theme } = useTheme();
@@ -61,7 +61,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
     setOpenEmojiPicker((prev) => !prev);
   };
   const updateLastMessage = async (lastMessage: Message) => {
-    const data = await fetch("/api/updateLastMessage", {
+    const data = await fetch(process.env.VERCEL_URL+"/api/updateLastMessage", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
         email: session?.user?.email,
       };
       const uploadMessageToUpstash = async () => {
-        const messageReq = await fetch("/api/addMessage", {
+        const messageReq = await fetch(process.env.VERCEL_URL+"/api/addMessage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

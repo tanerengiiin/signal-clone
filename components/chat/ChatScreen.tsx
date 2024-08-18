@@ -19,7 +19,7 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   const { chatScreenEndRef, chatName } = useChatContext();
   const pathname = usePathname();
   const { data, error, mutate } = useSWR<{ messages: Message[] }>(
-    "/api/getMessages/" + pathname.split("/").pop(),
+    process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop(),
     fetcher
   );
   const { data: session } = useSession();
@@ -27,7 +27,7 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   useEffect(() => {
     
     const getMessages = async () => {
-      const data = await fetch("/api/getMessages/" + pathname.split("/").pop()).then((res) => res.json());
+      const data = await fetch(process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop()).then((res) => res.json());
       return { messages: data.messages };
     }
     const channel = clientPusher.subscribe(pathname.split("/").pop()!);
