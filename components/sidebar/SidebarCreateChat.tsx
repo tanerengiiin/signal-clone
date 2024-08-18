@@ -29,6 +29,7 @@ const SidebarCreateChat = () => {
 
     uploadChatToUpstash();
   };
+  return null;
   return (
     <Button
       onClick={handleClick}

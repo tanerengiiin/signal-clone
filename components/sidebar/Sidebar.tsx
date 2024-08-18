@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import {
   Cog6ToothIcon,
   MagnifyingGlassIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { SIDEBAR_TOP_NAV } from "@/lib/constants";
@@ -56,14 +57,14 @@ const Sidebar = async () => {
         <div className="flex items-center justify-between gap-2 px-2.5 lg:px-4">
           <h4 className="font-medium text-xl text-primary">Chats</h4>
           <div className="flex items-center gap-2">
-            {/* <Button
+            <Button
               size={"icon"}
               variant={"ghost"}
               className="hover:bg-primary/5 dark:hover:bg-primary/10 text-primary/80"
             >
               <PencilSquareIcon className="w-5 h-5" />
-            </Button> */}
-            <SidebarCreateChat />
+            </Button>
+            {/* <SidebarCreateChat /> */}
             <Button
               size={"icon"}
               variant={"ghost"}
