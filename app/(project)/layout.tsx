@@ -33,6 +33,7 @@ export default function RootLayout({
               <Sidebar />
               <div className="flex-1">{children}</div>
             </main>
+            {modal}
           </LayoutClient>
         </ThemeProvider>
       </body>
