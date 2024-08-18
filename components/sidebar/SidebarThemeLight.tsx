@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { SunIcon } from "@heroicons/react/24/outline";
 import { useTheme } from "next-themes";
 import SidebarButton from "./SidebarButton";
+import { SunIcon } from "@radix-ui/react-icons";
 
 const SidebarThemeLight = () => {
   const { setTheme } = useTheme();
