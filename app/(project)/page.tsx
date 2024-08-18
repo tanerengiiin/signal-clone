@@ -1,5 +1,6 @@
 import SignalLogo from "@/components/signal-logo";
-
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export default function HomePage() {
     return (
         <div className="flex flex-col items-center justify-center w-full h-full">
