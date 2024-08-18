@@ -15,7 +15,7 @@ const SidebarCreateChat = () => {
       lastMessage: null
     };
     const uploadChatToUpstash = async () => {
-      const data = await fetch(`${process.env.VERCEL_URL}/api/createChat`, {
+      const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/createChat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

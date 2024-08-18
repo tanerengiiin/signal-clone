@@ -18,8 +18,8 @@ type ChatScreenProps = {
 const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   const { chatScreenEndRef, chatName } = useChatContext();
   const pathname = usePathname();
-  const { data, error, mutate } = useSWR<{ messages: Message[] }>(
-    `${process.env.VERCEL_URL}/api/getMessages/${pathname.split("/").pop()}`,
+  const { data, error, mutate } = useSWR(
+    `/api/getMessages/${pathname.split("/").pop()}`,
     fetcher
   );
   const { data: session } = useSession();
@@ -27,14 +27,14 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   useEffect(() => {
 
     const getMessages = async () => {
-      const data = await fetch(`${process.env.VERCEL_URL}/api/getMessages/${pathname.split("/").pop()}`).then((res) => res.json());
+      const data = await fetch(`${process.env.URL}/api/getMessages/${pathname.split("/").pop()}`).then((res) => res.json());
       return { messages: data.messages };
     }
     const channel = clientPusher.subscribe(pathname.split("/").pop()!);
     channel.bind("new-message", async (msg: Message) => {
 
       if (
-        msg?.id && !data?.messages?.find((item) => item.id === msg?.id)
+        msg?.id && !data?.messages?.find((item: Message) => item.id === msg?.id)
       ) {
         await mutate(getMessages,
           {
@@ -58,7 +58,7 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
       className="px-5 flex-1 flex flex-col-reverse transition-all overflow-auto h-full"
     >
       <div ref={chatScreenEndRef} />
-      {(data?.messages || initialMessages)?.map((item, index) => {
+      {(data?.messages || initialMessages)?.map((item: Message, index: number) => {
         const nextId = (data?.messages || initialMessages)?.[index - 1]?.email
         const prevId = (data?.messages || initialMessages)?.[index + 1]?.email
 

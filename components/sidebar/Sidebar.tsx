@@ -18,7 +18,7 @@ import SidebarCreateChat from "./SidebarCreateChat";
 
 const Sidebar = async() => {
   const data = await fetch(
-    `${process.env.VERCEL_URL }/api/getChats`,{
+    `${process.env.NEXT_PUBLIC_URL}/api/getChats`,{
       cache:'no-cache'
     }
   ).then((res) => res.json());

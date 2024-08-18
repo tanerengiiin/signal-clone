@@ -19,7 +19,7 @@ const ChatRow = ({ item }: { item: Chat }) => {
     data,
     error,
     mutate,
-  } = useSWR<{ chat: Chat }>(`${process.env.VERCEL_URL}/api/getChats/${item.id}`, fetcher, { refreshInterval: 15000 });
+  } = useSWR<{ chat: Chat }>(`/api/getChats/${item.id}`, fetcher, { refreshInterval: 15000 });
   useEffect(() => {
     if (pathname === '/chat/' + item.id && item.chatName !== chatName) {
       handleChatName(item.chatName)

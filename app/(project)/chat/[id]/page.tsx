@@ -6,7 +6,7 @@ import { Message } from "@/lib/types";
 import React from "react";
 const ChatPage = async ({ params }: { params: { id: string } }) => {
   const data = await fetch(
-    `${process.env.VERCEL_URL}/api/getMessages/${params.id}`
+    `${process.env.NEXT_PUBLIC_URL}/api/getMessages/${params.id}`
   ).then((res) => res.json());
 
   const messages: Message[] = data.messages;
