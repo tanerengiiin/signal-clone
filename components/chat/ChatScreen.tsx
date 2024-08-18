@@ -25,16 +25,14 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   const { data: session } = useSession();
 
   useEffect(() => {
-
     const getMessages = async () => {
-      const data = await fetch(`${process.env.URL}/api/getMessages/${pathname.split("/").pop()}`).then((res) => res.json());
+      const data = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getMessages/${pathname.split("/").pop()}`,{cache:'no-cache'}).then((res) => res.json());
       return { messages: data.messages };
     }
     const channel = clientPusher.subscribe(pathname.split("/").pop()!);
     channel.bind("new-message", async (msg: Message) => {
-
       if (
-        msg?.id && !data?.messages?.find((item: Message) => item.id === msg?.id)
+        msg?.id && !data?.messages?.some((item: Message) => item.id === msg?.id)
       ) {
         await mutate(getMessages,
           {
@@ -43,7 +41,6 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
           }
         );
       }
-
     });
 
     return () => {

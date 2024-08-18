@@ -9,7 +9,6 @@ export async function GET(
   try {
     const existingChat = await redis.hget("chats", params.id);
     if (existingChat===null) {
-      console.log("exis", existingChat)
       return new NextResponse("There is no chat with this id ", {
         status: 404,
       });
