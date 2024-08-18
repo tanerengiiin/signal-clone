@@ -7,6 +7,13 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const existingChat = await redis.hget("chats", params.id);
+    if (existingChat===null) {
+      console.log("exis", existingChat)
+      return new NextResponse("There is no chat with this id ", {
+        status: 404,
+      });
+    }
     const messagesRes = await redis.hvals(params.id);
     const messages: Message[] = messagesRes
       .map((message) => JSON.parse(message))

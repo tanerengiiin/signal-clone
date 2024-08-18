@@ -16,10 +16,10 @@ const SidebarThemeChanger = () => {
       onClick={handleTheme}
       tooltip={theme === "light" ? "Switch to Dark" : "Switch to Light"}
     >
-      {theme === "light" ? (
-        <MoonIcon className="w-5 h-5 text-primary" />
-      ) : (
+      {theme === "dark" ? (
         <SunIcon className="w-5 h-5 text-primary" />
+      ) : (
+        <MoonIcon className="w-5 h-5 text-primary" />
       )}
     </SidebarButton>
   );
