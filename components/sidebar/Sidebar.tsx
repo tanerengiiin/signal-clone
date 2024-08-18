@@ -9,13 +9,13 @@ import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { SIDEBAR_TOP_NAV } from "@/lib/constants";
 import Link from "next/link";
 import ChatRow from "../chat/ChatRow";
-import SidebarThemeChanger from "./SidebarThemeChanger";
 import SidebarButton from "./SidebarButton";
 import SidebarProfileButton from "./SidebarProfileButton";
 import { Chat } from "@/lib/types";
-import SidebarCreateChat from "./SidebarCreateChat";
 import SignalLogo from "../signal-logo";
 import redis from "@/redis";
+import SidebarThemeDark from "./SidebarThemeDark";
+import SidebarThemeLight from "./SidebarThemeLight";
 
 const Sidebar = async () => {
   const chatsRes = await redis.hvals("chats");
@@ -40,8 +40,11 @@ const Sidebar = async () => {
           ))}
         </ul>
         <ul className="flex flex-col items-center gap-2 w-full">
-          <li className="w-full">
-            <SidebarThemeChanger />
+          <li className="w-full block dark:hidden">
+            <SidebarThemeDark />
+          </li>
+          <li className="w-full hidden dark:block">
+            <SidebarThemeLight />
           </li>
           <li className="w-full">
             <SidebarButton tooltip="Settings">
