@@ -50,8 +50,8 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [data?.messages, mutate, pathname]);
-  if (!session) return null
+  }, [data?.messages, mutate, pathname, initialMessages]);
+  
   return (
     <div
       id="chat__body"

@@ -1,20 +1,13 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
 import React from "react";
+import SignalLogo from "../signal-logo";
 
 const Login = () => {
   const { data: session } = useSession();
   return (
     <div className="flex flex-col items-start gap-6 w-80">
-      <Image
-        className="w-16 h-auto"
-        sizes="100vw"
-        src={"/signal-logo.svg"}
-        alt="Signal Logo"
-        width={0}
-        height={0}
-      />
+      <SignalLogo className="w-16 h-auto"/>
       <div className="text-3xl font-semibold mt-2 text-primary/90">Sign in to Signal</div>
       <button
         onClick={() => signIn("google", { callbackUrl: "/" })}

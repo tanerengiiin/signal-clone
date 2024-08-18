@@ -24,7 +24,7 @@ const ChatRow = ({ item }: { item: Chat }) => {
     if (pathname === '/chat/' + item.id && item.chatName !== chatName) {
       handleChatName(item.chatName)
     }
-  }, [pathname])
+  }, [pathname,chatName,handleChatName,item.chatName,item.id])
   return (
     <Link
       href={"/chat/" + item.id}

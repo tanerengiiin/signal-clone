@@ -117,7 +117,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
     }
   };
   if (!session) return (
-    <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background " />
+    <div className="sticky bottom-0 z-20 h-2 bg-background " />
   );
   return (
     <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background ">

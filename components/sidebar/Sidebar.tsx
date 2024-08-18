@@ -3,18 +3,17 @@ import { Button } from "../ui/button";
 import {
   Cog6ToothIcon,
   MagnifyingGlassIcon,
-  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { SIDEBAR_TOP_NAV } from "@/lib/constants";
 import Link from "next/link";
-import Image from "next/image";
 import ChatRow from "../chat/ChatRow";
 import SidebarThemeChanger from "./SidebarThemeChanger";
 import SidebarButton from "./SidebarButton";
 import SidebarProfileButton from "./SidebarProfileButton";
 import { Chat } from "@/lib/types";
 import SidebarCreateChat from "./SidebarCreateChat";
+import SignalLogo from "../signal-logo";
 
 const Sidebar = async() => {
   const data = await fetch(
@@ -30,14 +29,7 @@ const Sidebar = async() => {
         <ul className="flex flex-col items-center gap-2 w-full">
           <li className="py-1.5">
             <Link href={"/"}>
-              <Image
-                className="w-6 h-auto"
-                sizes="100vw"
-                width={0}
-                height={0}
-                src="/signal-logo.svg"
-                alt="Signal Logo"
-              />
+              <SignalLogo className="w-6 h-auto"/>
             </Link>
           </li>
           {SIDEBAR_TOP_NAV.map((item, index) => (
