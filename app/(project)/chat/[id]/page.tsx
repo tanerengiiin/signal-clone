@@ -4,6 +4,10 @@ import ChatScreen from "@/components/chat/ChatScreen";
 import ChatTopbar from "@/components/chat/ChatTopbar";
 import { Message } from "@/lib/types";
 import React from "react";
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 const ChatPage = async ({ params }: { params: { id: string } }) => {
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_URL}/api/getMessages/${params.id}`
