@@ -12,16 +12,16 @@ import { formatDate } from "@/lib/utils";
 import { useChatContext } from "../chat-context-provider";
 
 const ChatRow = ({ item }: { item: Chat }) => {
-  const { handleChatName , chatName} = useChatContext()
+  const { handleChatName, chatName } = useChatContext()
   const { data: session } = useSession()
   const pathname = usePathname();
   const {
     data,
     error,
     mutate,
-  } = useSWR<{ chat: Chat }>(process.env.VERCEL_URL+"/api/getChats/" + item.id, fetcher, { refreshInterval: 15000 });
+  } = useSWR<{ chat: Chat }>(`${process.env.VERCEL_URL}/api/getChats/${item.id}`, fetcher, { refreshInterval: 15000 });
   useEffect(() => {
-    if(pathname==='/chat/'+item.id && item.chatName!==chatName){
+    if (pathname === '/chat/' + item.id && item.chatName !== chatName) {
       handleChatName(item.chatName)
     }
   }, [pathname])

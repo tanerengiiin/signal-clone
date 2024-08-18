@@ -22,7 +22,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
     data,
     error,
     mutate,
-  } = useSWR(process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop(), fetcher);
+  } = useSWR(`${process.env.VERCEL_URL}/api/getMessages/${pathname.split("/").pop()}`, fetcher);
   const { data: session } = useSession();
   const { repliedMessage, handleRepliedMessage } = useChatContext();
   const { theme } = useTheme();
@@ -61,7 +61,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
     setOpenEmojiPicker((prev) => !prev);
   };
   const updateLastMessage = async (lastMessage: Message) => {
-    const data = await fetch(process.env.VERCEL_URL+"/api/updateLastMessage", {
+    const data = await fetch(`${process.env.VERCEL_URL}/api/updateLastMessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
         email: session?.user?.email,
       };
       const uploadMessageToUpstash = async () => {
-        const messageReq = await fetch(process.env.VERCEL_URL+"/api/addMessage", {
+        const messageReq = await fetch(`${process.env.VERCEL_URL}/api/addMessage`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -111,12 +111,12 @@ const ChatAction = ({ initialMessages }: ChatActionProps) => {
         optimisticData: { messages: [message, ...(data?.messages || initialMessages)] },
         rollbackOnError: true,
       });
-     
+
       scrollToBottom()
     }
   };
   if (!session) return (
-    <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background "/>
+    <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background " />
   );
   return (
     <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background ">

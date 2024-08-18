@@ -8,14 +8,14 @@ import { Chat } from "@/lib/types";
 const SidebarCreateChat = () => {
   const handleClick = () => {
     const id = uuid();
-    const chat:Chat = {
+    const chat: Chat = {
       id,
       chatName: "Managers Group",
       created_at: Date.now(),
-      lastMessage:null
+      lastMessage: null
     };
     const uploadChatToUpstash = async () => {
-      const data = await fetch(process.env.VERCEL_URL+"/api/createChat", {
+      const data = await fetch(`${process.env.VERCEL_URL}/api/createChat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
