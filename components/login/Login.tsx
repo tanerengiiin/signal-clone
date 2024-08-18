@@ -5,7 +5,6 @@ import React from "react";
 
 const Login = () => {
   const { data: session } = useSession();
-  console.log(session);
   return (
     <div className="flex flex-col items-start gap-6 w-80">
       <Image

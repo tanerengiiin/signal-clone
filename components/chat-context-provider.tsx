@@ -1,11 +1,15 @@
 "use client";
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import React, { createContext, useState, ReactNode, useContext, useRef } from "react";
 
 interface ChatContextType {
   openChatDetail: boolean;
   handleChatDetail: (val?: boolean) => void;
   repliedMessage: RepliedMessageType | undefined;
   handleRepliedMessage: (val?: RepliedMessageType) => void;
+  chatScreenEndRef: React.RefObject<HTMLDivElement>;
+  scrollToBottom: () => void;
+  chatName: string;
+  handleChatName: (val:string) => void;
 }
 
 interface RepliedMessageType {
@@ -19,8 +23,9 @@ interface ChatProviderProps {
 }
 
 export const ChatProvider = ({ children }: ChatProviderProps) => {
+  const chatScreenEndRef = useRef<HTMLDivElement>(null);
   const [openChatDetail, setOpenChatDetail] = useState<boolean>(true);
-
+  const [chatName, setChatName] = useState<string>('');
   const [repliedMessage, setRepliedMessage] = useState<RepliedMessageType>();
   const handleChatDetail = (val?: boolean) => {
     setOpenChatDetail((prev) => val ?? !prev);
@@ -29,6 +34,14 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
     if (!val) setRepliedMessage(undefined);
     setRepliedMessage(val);
   };
+  const scrollToBottom = () => {
+    if (chatScreenEndRef.current) {
+      chatScreenEndRef.current.scrollIntoView({ behavior: 'instant' });
+    }
+  };
+  const handleChatName=(val:string)=>{
+    setChatName(val)
+  }
   return (
     <ChatContext.Provider
       value={{
@@ -36,6 +49,10 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
         handleChatDetail,
         repliedMessage,
         handleRepliedMessage,
+        chatScreenEndRef,
+        scrollToBottom,
+        chatName,
+        handleChatName
       }}
     >
       {children}

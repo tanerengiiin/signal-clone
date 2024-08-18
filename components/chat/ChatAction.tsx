@@ -12,10 +12,14 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-const ChatAction = () => {
+type ChatActionProps = {
+  initialMessages: Message[]
+}
+const ChatAction = ({ initialMessages }: ChatActionProps) => {
+  const { scrollToBottom } = useChatContext()
   const pathname = usePathname();
   const {
-    data: { messages } = { messages: [] },
+    data,
     error,
     mutate,
   } = useSWR("/api/getMessages/" + pathname.split("/").pop(), fetcher);
@@ -56,16 +60,28 @@ const ChatAction = () => {
   const toggleEmojiPicker = () => {
     setOpenEmojiPicker((prev) => !prev);
   };
+  const updateLastMessage = async (lastMessage: Message) => {
+    const data = await fetch("/api/updateLastMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: pathname.split("/").pop(),
+        lastMessage,
+      }),
+    }).then((res) => res.json());
+  };
   const handleKeyDown = async (
     event: React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
     if (
-      value.trim().length > 0 &&
+      value.trim().length &&
       event.key === "Enter" &&
       session?.user?.email
     ) {
       event.preventDefault();
-      
+
       setValue("");
       const id = uuid();
       const message: Message = {
@@ -77,7 +93,7 @@ const ChatAction = () => {
         email: session?.user?.email,
       };
       const uploadMessageToUpstash = async () => {
-        const data = await fetch("/api/addMessage", {
+        const messageReq = await fetch("/api/addMessage", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -87,24 +103,23 @@ const ChatAction = () => {
             message,
           }),
         }).then((res) => res.json());
-        return [data.message, ...(messages || [])];
+        updateLastMessage(messageReq.message)
+        return { messages: [messageReq.message, ...(data?.messages || initialMessages)] };
       };
 
       await mutate(uploadMessageToUpstash, {
-        optimisticData: [message, ...(messages || [])],
+        optimisticData: { messages: [message, ...(data?.messages || initialMessages)] },
         rollbackOnError: true,
       });
-      setTimeout(() => {
-        const chatBody = document.getElementById("chat__body");
-        if (chatBody) {
-          chatBody.scrollTop = chatBody.scrollHeight;
-        }
-      }, 100);
+     
+      scrollToBottom()
     }
   };
-  if (!session) return null;
+  if (!session) return (
+    <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background "/>
+  );
   return (
-    <div className="sticky bottom-0 z-20 px-5 pb-4 pt-3 bg-background ">
+    <div className="sticky bottom-0 z-20 h-16 px-5 pb-4 pt-3 bg-background ">
       {repliedMessage ? (
         <div className="relative flex bg-blue-600/40 dark:bg-blue-600/30 rounded-t-lg rounded-b-sm mb-3 overflow-hidden transition-all">
           <button
@@ -136,9 +151,8 @@ const ChatAction = () => {
             <FaceSmileIcon className="w-5 h-5" />
           </Button>
           <div
-            className={`absolute bottom-full -translate-y-4 transition-all ${
-              openEmojiPicker ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute bottom-full -translate-y-4 transition-all ${openEmojiPicker ? "opacity-100" : "opacity-0"
+              }`}
           >
             <EmojiPicker
               open={openEmojiPicker}

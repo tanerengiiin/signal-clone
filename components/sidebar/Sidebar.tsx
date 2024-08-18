@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import {
   Cog6ToothIcon,
@@ -14,21 +13,19 @@ import ChatRow from "../chat/ChatRow";
 import SidebarThemeChanger from "./SidebarThemeChanger";
 import SidebarButton from "./SidebarButton";
 import SidebarProfileButton from "./SidebarProfileButton";
-import useSWR from "swr";
-import { fetcher } from "@/lib/utils";
 import { Chat } from "@/lib/types";
+import SidebarCreateChat from "./SidebarCreateChat";
 
-const Sidebar = () => {
-  const {
-    data: {chats} = {},
-    error,
-    mutate,
-  } = useSWR<{chats:Chat[]}>("/api/getChats", fetcher);
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);
+const Sidebar = async() => {
+  const data = await fetch(
+    `${process.env.VERCEL_URL || 'http://localhost:3000'}/api/getChats`,{
+      cache:'no-cache'
+    }
+  ).then((res) => res.json());
+
+  const chats:Chat[]=data.chats;
   return (
-    <div className="w-80 lg:w-96 flex h-screen overflow-hidden bg-primary-foreground border-r">
+    <div className="w-72 lg:w-96 flex h-screen overflow-hidden bg-primary-foreground border-r">
       <nav className="w-14 lg:w-16 bg-red border-r py-4 px-2 flex flex-col justify-between overflow-auto">
         <ul className="flex flex-col items-center gap-2 w-full">
           <li className="py-1.5">
@@ -69,13 +66,14 @@ const Sidebar = () => {
         <div className="flex items-center justify-between gap-2 px-2.5 lg:px-4">
           <h4 className="font-medium text-xl text-primary">Chats</h4>
           <div className="flex items-center gap-2">
-            <Button
+            {/* <Button
               size={"icon"}
               variant={"ghost"}
               className="hover:bg-primary/5 dark:hover:bg-primary/10 text-primary/80"
             >
               <PencilSquareIcon className="w-5 h-5" />
-            </Button>
+            </Button> */}
+            <SidebarCreateChat/>
             <Button
               size={"icon"}
               variant={"ghost"}

@@ -26,14 +26,14 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useChatContext } from "../chat-context-provider";
 
 const ChatDetail = () => {
-  const { openChatDetail, handleChatDetail } = useChatContext();
+  const { openChatDetail, handleChatDetail, chatName } = useChatContext();
   return (
     <div
       className={`pb-4 border-l bg-primary-foreground h-full overflow-hidden transition-all ease-in-out duration-300  ${
-        openChatDetail ? "opacity-100 max-w-96" : "opacity-0 max-w-0"
+        openChatDetail ? "opacity-100 max-w-72 lg:max-w-96" : "opacity-0 max-w-0"
       }`}
     >
-      <div className="w-96 h-full overflow-auto transition-all">
+      <div className="w-72 lg:w-96 h-full overflow-auto transition-all">
         <div className="p-4 bg-primary-foreground sticky top-0 z-20">
           <Button
             onClick={() => handleChatDetail()}
@@ -50,7 +50,7 @@ const ChatDetail = () => {
               <UsersIcon className="w-12 h-12 text-blue-500" />
             </div>
             <div className="mt-4 font-semibold text-2xl text-center text-primary">
-              Group
+              {chatName}
             </div>
             <div className="flex items-center gap-4 mt-6">
               {CHAT_DETAIL_NAV.map((item, index) => (

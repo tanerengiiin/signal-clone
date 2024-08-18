@@ -3,14 +3,16 @@ import React from "react";
 import { Button } from "../ui/button";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { v4 as uuid } from "uuid";
+import { Chat } from "@/lib/types";
 
 const SidebarCreateChat = () => {
   const handleClick = () => {
     const id = uuid();
-    const chat = {
+    const chat:Chat = {
       id,
-      chatName: "Designers Group",
+      chatName: "Managers Group",
       created_at: Date.now(),
+      lastMessage:null
     };
     const uploadChatToUpstash = async () => {
       const data = await fetch("/api/createChat", {

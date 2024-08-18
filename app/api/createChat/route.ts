@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
+    // return new NextResponse("Error in creating chat ", {
+    //   status: 404,
+    // });
     const body = await request.json();
     const { chat } = body;
 
@@ -23,7 +26,7 @@ export async function POST(request: Request) {
       status: 200,
     });
   } catch (error: any) {
-    return new NextResponse("Error in sending message " + error, {
+    return new NextResponse("Error in creating chat " + error, {
       status: 500,
     });
   }

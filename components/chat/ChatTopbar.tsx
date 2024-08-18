@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { useChatContext } from "../chat-context-provider";
 const ChatTopbar = () => {
-  const { handleChatDetail } = useChatContext();
+  const { handleChatDetail,chatName } = useChatContext();
   return (
     <div className="sticky top-0 z-20 bg-background pt-4 pb-3 px-5 flex items-center gap-4">
       <div
@@ -16,7 +16,7 @@ const ChatTopbar = () => {
           <UsersIcon className="w-4 h-4 text-blue-600" />
         </div>
         <div className="flex-1">
-          <h1 className="font-semibold">Group</h1>
+          <h1 className="font-semibold">{chatName}</h1>
         </div>
       </div>
       <ul className="flex items-center gap-2">

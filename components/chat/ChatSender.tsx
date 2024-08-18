@@ -22,13 +22,13 @@ const ChatSender = ({
           `}
       >
         {message}
-        <span className="text-xs font-light leading-tight opacity-80 whitespace-nowrap">
+        <time suppressHydrationWarning className="text-xs font-light leading-tight opacity-80 whitespace-nowrap">
           {new Date(created_at).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
           })}
-        </span>
+        </time>
       </div>
     </div>
   );

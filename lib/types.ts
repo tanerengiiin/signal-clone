@@ -18,4 +18,5 @@ export type Chat={
   id:string;
   created_at:number;
   chatName:string;
+  lastMessage:Message | null;
 }
