@@ -19,20 +19,20 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
   const { chatScreenEndRef, chatName } = useChatContext();
   const pathname = usePathname();
   const { data, error, mutate } = useSWR<{ messages: Message[] }>(
-    process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop(),
+    process.env.VERCEL_URL + "/api/getMessages/" + pathname.split("/").pop(),
     fetcher
   );
   const { data: session } = useSession();
 
   useEffect(() => {
-    
+
     const getMessages = async () => {
-      const data = await fetch(process.env.VERCEL_URL+"/api/getMessages/" + pathname.split("/").pop()).then((res) => res.json());
+      const data = await fetch(process.env.VERCEL_URL + "/api/getMessages/" + pathname.split("/").pop()).then((res) => res.json());
       return { messages: data.messages };
     }
     const channel = clientPusher.subscribe(pathname.split("/").pop()!);
     channel.bind("new-message", async (msg: Message) => {
-      
+
       if (
         msg?.id && !data?.messages?.find((item) => item.id === msg?.id)
       ) {
@@ -43,7 +43,7 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
           }
         );
       }
-      
+
     });
 
     return () => {
@@ -51,7 +51,7 @@ const ChatScreen = ({ initialMessages }: ChatScreenProps) => {
       channel.unsubscribe();
     };
   }, [data?.messages, mutate, pathname]);
-  if(!session) return null
+  if (!session) return null
   return (
     <div
       id="chat__body"
