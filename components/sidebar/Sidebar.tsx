@@ -14,22 +14,20 @@ import SidebarProfileButton from "./SidebarProfileButton";
 import { Chat } from "@/lib/types";
 import SidebarCreateChat from "./SidebarCreateChat";
 import SignalLogo from "../signal-logo";
+import redis from "@/redis";
 
-const Sidebar = async() => {
-  const data = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/getChats`,{
-      cache:'no-cache'
-    }
-  ).then((res) => res.json());
-
-  const chats:Chat[]=data.chats;
+const Sidebar = async () => {
+  const chatsRes = await redis.hvals("chats");
+  const chats: Chat[] = chatsRes
+    .map((chat) => JSON.parse(chat))
+    .sort((a, b) => b?.lastMessage?.created_at - a?.lastMessage?.created_at);
   return (
     <div className="w-72 lg:w-96 flex h-screen overflow-hidden bg-primary-foreground border-r">
       <nav className="w-14 lg:w-16 bg-red border-r py-4 px-2 flex flex-col justify-between overflow-auto">
         <ul className="flex flex-col items-center gap-2 w-full">
           <li className="py-1.5">
             <Link href={"/"}>
-              <SignalLogo className="w-6 h-auto"/>
+              <SignalLogo className="w-6 h-auto" />
             </Link>
           </li>
           {SIDEBAR_TOP_NAV.map((item, index) => (
@@ -65,7 +63,7 @@ const Sidebar = async() => {
             >
               <PencilSquareIcon className="w-5 h-5" />
             </Button> */}
-            <SidebarCreateChat/>
+            <SidebarCreateChat />
             <Button
               size={"icon"}
               variant={"ghost"}
@@ -87,7 +85,7 @@ const Sidebar = async() => {
         </div>
         <div className="mt-4 flex flex-col gap-1.5 flex-1 overflow-auto px-2.5 lg:px-4">
           {chats?.map((item: any, i: React.Key | null | undefined) => (
-            <ChatRow key={i} item={item}/>
+            <ChatRow key={i} item={item} />
           ))}
         </div>
       </div>
